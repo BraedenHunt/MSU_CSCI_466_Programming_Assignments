@@ -102,6 +102,20 @@ class RDT:
     # if this was the last packet, will return on the next iteration
     
     def rdt_2_1_send(self, msg_S):
+        # Send Packet
+        p = Packet(self.seq_num, msg_S)
+        self.net_snd.udt_send(p.get_byte_S())
+
+        # Wait for ACK or NAK
+        while True:
+            rcvpkt = rdt_2_1_receive()
+            self.byte_buffer += byte_S
+
+            if Packet.corrupt(rcvpkt) or rcvpkt.msg_S == 'NAK':
+                self.net_snd.udt_send(p.get_byte_S())
+
+        self.seq_num += 1
+
         pass
     
     def rdt_2_1_receive(self):
