@@ -5,6 +5,7 @@ import hashlib
 
 
 class Packet:
+    # TODO: Create ACK field
     # the number of bytes used to store packet length
     seq_num_S_length = 10
     length_S_length = 10
@@ -108,10 +109,10 @@ class RDT:
 
         # Wait for ACK or NAK
         while True:
-            rcvpkt = rdt_2_1_receive()
+            # look for packet on net_snd_.udt_receive()
             self.byte_buffer += byte_S
 
-            if Packet.corrupt(rcvpkt) or rcvpkt.msg_S == 'NAK':
+            if Packet.corrupt(rcvpkt) or rcvpkt.msg_S == 'NAK 1':
                 self.net_snd.udt_send(p.get_byte_S())
 
         self.seq_num += 1
